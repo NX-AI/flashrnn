@@ -26,6 +26,7 @@ To install FlashRNN, simply use:
 ```bash
 pip install flashrnn
 ``` 
+
 Your hardware needs to support CUDA Compute Capability $8.0$ or later. Make sure, you have an up to date `g++` compiler installed. We recommend to use `conda` with an environment derived from the provided `environment_pt240cu124.yaml`:
 ```bash
 conda env create -n flashrnn -f environment_pt240cu124.yaml
@@ -68,7 +69,17 @@ hidden_state = states[0]
 We thank Thomas Schmied and Pieter-Jan Hoedt for valuable feedback.
 
 ## Cite as
-
+```
+@misc{pöppel2024flashrnnoptimizingtraditionalrnns,
+      title={FlashRNN: Optimizing Traditional RNNs on Modern Hardware}, 
+      author={Korbinian Pöppel and Maximilian Beck and Sepp Hochreiter},
+      year={2024},
+      eprint={2412.07752},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2412.07752}, 
+}
+```
 
 ## License
 NXAI Community License (see `LICENSE` file)

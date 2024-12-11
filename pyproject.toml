@@ -1,0 +1,18 @@
+[project]
+name = "flashrnn"
+version = "1.0.0"
+authors = [
+  { name="Korbinian Pöppel", email="korbinian.poeppel@nx-ai.com" },
+  { name="Maximilian Beck", email="maximilian.beck@nx-ai.com" },
+]
+description = "FlashRNN: Optimizing Traditional RNNs on Modern Hardware"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/NX-AI/flashrnn"
+Issues = "https://github.com/NX-AI/flashrnn/issues"

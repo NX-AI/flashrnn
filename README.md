@@ -62,6 +62,7 @@ states_initial = torch.randn([S, B, 1, N, D], device=device, dtype=dtype, requir
 states, last_states = flashrnn(Wx, R, b, states=states_initial, function="lstm", backend="cuda_fused")
 
 # for LSTM the hidden h state is the first of [h, c]
+# [S, B, T, N, D]
 hidden_state = states[0]
 
 ```

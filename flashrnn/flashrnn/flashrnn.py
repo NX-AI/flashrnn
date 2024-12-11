@@ -1130,6 +1130,6 @@ def flashrnn(
     states = _permute_output_backward(config, states)
     Wx = _permute_input(config, Wx)
     R = _permute_recurrent_weight(config, R)
-    b = _permute_bias(config, b)  # TODO check if this works
+    b = _permute_bias(config, b)
     h, last_h = kernel(Wx, states, R, b)
     return _permute_output(config, h), _permute_output(config, last_h)

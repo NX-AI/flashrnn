@@ -29,7 +29,7 @@ ITERS = 4
 Wx = torch.randn([B, T, NG, NH, D], device=device, dtype=dtype)
 R = torch.randn([NG, NH, D, D], device=device, dtype=dtype)
 b = torch.randn([NG, NH, D], device=device, dtype=dtype)
-states_initial = torch.randn([NS, B, NH, D], device=device, dtype=dtype)
+states_initial = torch.randn([NS, B, 1, NH, D], device=device, dtype=dtype)
 
 Wx_mpt = Wx.clone().to(TGT_DTYPE).detach().requires_grad_(False)
 R_mpt = R.clone().to(TGT_DTYPE).detach().requires_grad_(False)

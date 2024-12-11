@@ -64,7 +64,7 @@ def flashrnn_forward(
         # g[i] = gates
         states_all[i + 1] = states
 
-    # shapes ([S, B, H], ([B,H], [B,H], [B,H]), [S, B, 4*H])
+    # shapes ([T, B, S, N, H], [S, B, 4, N, H])
     return states_all[1:].view(
         sequence_dim, batch_dim, num_states, num_heads, head_dim
     ), states.view(1, batch_dim, num_states, num_heads, head_dim)

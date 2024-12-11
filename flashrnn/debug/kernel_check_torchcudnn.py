@@ -33,4 +33,3 @@ for _ in tqdm(range(WARMUP_ITERS), desc="Warmup - CUDnn"):
 
 for _ in tqdm(range(ITERS), desc="CUDnn"):
     out = lstm_mod(x)[0].sum().backward()
-

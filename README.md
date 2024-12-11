@@ -51,7 +51,7 @@ S = 2        # number of states
 Wx = torch.randn([B, T, G, N, D], device=device, dtype=dtype, requires_grad=True)
 R = torch.randn([G, N, D, D], device=device, dtype=dtype, requires_grad=True)
 b = torch.randn([G, N, D], device=device, dtype=dtype, requires_grad=True)
-states_initial = torch.randn([S, B, N, D], device=device, dtype=dtype, requires_grad=True)
+states_initial = torch.randn([S, B, 1, N, D], device=device, dtype=dtype, requires_grad=True)
 
 # available functions
 # lstm, gru, elman, slstm

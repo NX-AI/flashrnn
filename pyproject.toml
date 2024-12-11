@@ -13,6 +13,17 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+dependencies = [
+    "torch",
+    "einops",
+    "triton",
+    "ninja"
+]
+
+
 [project.urls]
 Homepage = "https://github.com/NX-AI/flashrnn"
 Issues = "https://github.com/NX-AI/flashrnn/issues"
+
+[tools.setuptools.packages.find]
+where = ["flashrnn"]

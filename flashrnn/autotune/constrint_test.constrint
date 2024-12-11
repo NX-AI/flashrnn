@@ -1,0 +1,76 @@
+# Integer CSP Rules File - CONSTRINT
+# Format looks like the following
+# First and most obvious, comment lines are denoted by #
+# Constraints are Lines ending with ;
+# ; is equivalent to a logic and
+# | has higher precendence (and should be used EOL) and denotes OR
+# With a line there are three types of constraint:
+# == denotes an equality constraint
+# <= denotes and inequality constraint (no >= here)
+# TERM_A % TERM_B == 0 denotes a divisible constraint (specialty of this library)
+# As seen in the previous line, there are TERMS, which can consist of (low to high precedence)
+# sum: TERM_A + TERM_B
+# product: TERM_A * TERM_B
+# power: TERM_A ^ INTEGER
+# Note that there are no brackets and therefore by the precedence rules
+# for the higher precendence level there is no TERMs consisting of a lower precendence
+# brackets can be added for readability but are STRIPPED! (for now at least)
+# Now again, there was another type of TERM introduced before. Basically, this is the VARIBLE.
+# There are also INTEGERs and LISTs here, denoting special variables that are tied to a single or multiple integers.
+# A LIST looks like [INTEGER, INTEGER, INTEGER,...] and denotes that all of the noted values are possible
+# A general VARIABLE is any string consisting of alphabet and _ characters
+# An INTEGER is a number in decimal format
+#
+# That's it. Keep in mind that there is no / or - operations, but changing you equations,
+# it is always possible to formulate the proper constraint.
+# Pro-Tip: Use comments for readability (i.e. write your constraint using - and / if thats easier)
+# and add helper variables (connected via equalities) to simplify things.
+#
+# Additional note: This is no fully fledged solver, it just applies constraints to variables one way, i.e.
+# it tries to achieve arc consistency (though it might not be fully enforced).
+# So use it to narrow down the solution space and later check solutions by setting specific variables manually.
+# Why not use an existing solver for that? Because this one is optimized for integer ranges and problems,
+# i. e. problems that consist of integer variables, constraints of the forms shown above and terms of the form
+# shown above.
+
+
+# External Sizes (to be determined by device parameters later on)
+WARP_SIZE == 32;
+WARP_TILING_DIM_RGATE == 32;
+WARP_TILING_DIM_BATCH == 8;
+WARP_TILING_DIM_HIDDEN == 16;
+MAX_THREADS_PER_BLOCK == 1024;
+STREAMING_MULTIPROCESSORS == 108;
+SHARED_MEMORY_PER_BLOCK == 165000;
+RECURRENT_GATES == 1;
+INPUTBASED_GATES == 3;
+SHARED_MEMORY_PADDING == 8;
+BATCH_TILING_COUNT == 1;
+
+# Sizes given by user
+REAL_HIDDEN_DIM == 2976;
+# HIDDEN_DIM == 1200 ;
+BATCH_DIM == 8;
+
+# Experiments
+# WARP_TILING_COUNT_HIDDEN == 1;
+# RECURRENT_TILING_COUNT_GATE == 54 ;
+# RECURRENT_TILING_COUNT_HIDDEN == 3;
+# Constraints by computation and memory sizes
+
+REAL_HIDDEN_DIM <= HIDDEN_DIM ;
+HIDDEN_DIM_SQ == HIDDEN_DIM ^ 2 ;
+HIDDEN_DIM % RECURRENT_TILING_COUNT_HIDDEN == 0 ;
+RECURRENT_GATES * HIDDEN_DIM % RECURRENT_TILING_COUNT_GATE == 0 ;
+RECURRENT_GATES * HIDDEN_DIM % (RECURRENT_TILING_COUNT_GATE * WARP_TILING_DIM_RGATE) == 0 ;
+RECURRENT_GATES * HIDDEN_DIM * WARP_TILING_COUNT_HIDDEN <= MAX_THREADS_PER_BLOCK * RECURRENT_TILING_COUNT_GATE ;
+WARP_TILING_COUNT_BATCH * WARP_TILING_DIM_BATCH * BATCH_TILING_COUNT == BATCH_DIM ;
+HIDDEN_DIM % WARP_TILING_COUNT_HIDDEN == 0;
+HIDDEN_DIM % WARP_TILING_DIM_HIDDEN == 0;
+NUM_BLOCKS <= STREAMING_MULTIPROCESSORS ;
+NUM_BLOCKS == RECURRENT_TILING_COUNT_GATE * RECURRENT_TILING_COUNT_HIDDEN * BATCH_TILING_COUNT ;
+# 2 * RECURRENT_GATES * HIDDEN_DIM * HIDDEN_DIM / RECURRENT_TILING_COUNT_GATE / RECURRENT_TILING_COUNT_HIDDEN + 4 * RECURRENT_GATES * HIDDEN_DIM / RECURRENT_TILING_COUNT_GATE <= SHARED_MEMORY_PER_BLOCK / BATCH_TILING_COUNT
+# 2 * RECURRENT_GATES * BATCH_TILING_COUNT * HIDDEN_DIM * ( HIDDEN_DIM + 2 * RECURRENT_TILING_COUNT_HIDDEN) <= SHARED_MEMORY_PER_BLOCK * NUM_BLOCKS;
+# 2 * RECURRENT_GATES * BATCH_TILING_COUNT * HIDDEN_DIM_SQ + 2 * HIDDEN_DIM * RECURRENT_GATES * + 4 * RECURRENT_TILING_COUNT_HIDDEN * RECURRENT_GATES * BATCH_TILING_COUNT * HIDDEN_DIM <= SHARED_MEMORY_PER_BLOCK * NUM_BLOCKS;
+2 * RECURRENT_GATES * BATCH_TILING_COUNT * HIDDEN_DIM_SQ + 2 * HIDDEN_DIM * RECURRENT_GATES * BATCH_TILING_COUNT * SHARED_MEMORY_PADDING + 4 * RECURRENT_TILING_COUNT_HIDDEN * RECURRENT_GATES * BATCH_TILING_COUNT * HIDDEN_DIM + 4 * RECURRENT_TILING_COUNT_HIDDEN * RECURRENT_GATES * BATCH_TILING_COUNT * SHARED_MEMORY_PADDING == SHARED_MEMORY_USED;
+SHARED_MEMORY_USED <= SHARED_MEMORY_PER_BLOCK * NUM_BLOCKS;

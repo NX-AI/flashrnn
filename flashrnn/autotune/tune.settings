@@ -1,0 +1,25 @@
+{
+    "RECURRENT_TILING_COUNT_HIDDEN": [
+        8
+    ],
+    "RECURRENT_TILING_COUNT_GATE": [
+        8
+    ],
+    "WARP_TILING_COUNT_BATCH": [
+        1
+    ],
+    "WARP_TILING_COUNT_RGATE": [
+        1
+    ],
+    "WARP_TILING_COUNT_HIDDEN": [
+        1
+    ],
+    "WARP_TILING_DIM_BATCH": 8,
+    "WARP_TILING_DIM_HIDDEN": 16,
+    "WARP_TILING_DIM_RGATE": 32,
+    "WARP_SIZE": 32,
+    "SHARED_MEMORY_OFFSET": 0,
+    "RECURRENT_GATES": 1,
+    "INPUTBASED_GATES": 3,
+    "TOTAL_GATES": 4
+}

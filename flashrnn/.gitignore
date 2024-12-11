@@ -1,0 +1,8 @@
+__pycache__
+__pycache__/**
+
+*.pyc
+*.cpython*
+
+paperplots
+paperplots*

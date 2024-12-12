@@ -6,7 +6,10 @@ Korbinian Pöppel, Maximilian Beck, Sepp Hochreiter
 FlashRNN implements traditional RNNs like LSTMs, GRUs and Elman networks as well as the recent sLSTM architecture in CUDA and Triton. In contrary to common modern sequence models they have state tracking capabilities (Merrill et al., 2024). All of them are of the basic recurrent structure with input $\mathbf{x}^{(n)}\_t$, bias $\mathbf{b}^{(n)}$, recurrent matrix $\mathbf{R}^{(n)}$ :
 
 $$
-\mathbf{g}^{(n)}\_{t} = \mathbf{R}^{(n)} \ \mathbf{s}^{(0)}\_{t-1} + \mathbf{x}^{(n)}_{t} + \mathbf{b}^{(n)} \\
+\mathbf{g}^{(n)}\_{t} = \mathbf{R}^{(n)} \ \mathbf{s}^{(0)}\_{t-1} + \mathbf{x}^{(n)}_{t} + \mathbf{b}^{(n)} 
+$$
+
+$$
 \mathbf{y}^{(m)}\_t = \mathcal{P}^{(m)}\left( \left( \mathbf{s}^{(m')}\_{t-1} \right)\_{m'} , \left( \mathbf{g}^{(n)}\_{t}  \right)\_{n} \right)
 $$
 

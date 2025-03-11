@@ -32,9 +32,26 @@ def defines_to_cflags(
 
 curdir = os.path.dirname(__file__)
 
-os.environ["CUDA_LIB"] = os.path.join(
-    os.path.split(torch.utils.cpp_extension.include_paths(cuda=True)[-1])[0], "lib"
-)
+if torch.cuda.is_available():
+    from packaging import version
+    if version.parse(torch.__version__) >= version.parse("2.6.0"):
+        os.environ["CUDA_LIB"] = os.path.join(os.path.split(torch.utils.cpp_extension.include_paths(device_type="cuda")[-1])[0], "lib")
+    else:
+        os.environ["CUDA_LIB"] = os.path.join(os.path.split(torch.utils.cpp_extension.include_paths(cuda=True)[-1])[0], "lib")
+
+
+EXTRA_INCLUDE_PATHS = ()
+if "CONDA_PREFIX" in os.environ:
+    from pathlib import Path
+    from packaging import version
+    import sys
+    import glob
+    if version.parse(torch.__version__) >= version.parse("2.6.0"):
+        matching_dirs = glob.glob(f"{os.environ['CONDA_PREFIX']}/targets/**", recursive=True)
+        # EXTRA_INCLUDE_PATHS = (os.path.join(os.environ['CONDA_PREFIX'], "lib", "python" + str(sys.version_info.major) + "." + str(sys.version_info.minor), 'site-packages', 'nvidia', "cuda_runtime", "include"),)
+        EXTRA_INCLUDE_PATHS = tuple(map(str, (Path(os.environ["CONDA_PREFIX"]) / "targets").glob("**/include/")))[:1]
+
+
 
 
 def load(*, name, sources, extra_cflags=(), extra_cuda_cflags=(), **kwargs):
@@ -67,6 +84,9 @@ def load(*, name, sources, extra_cflags=(), extra_cuda_cflags=(), **kwargs):
         "-U__CUDA_NO_BFLOAT162_OPERATORS__",
         "-U__CUDA_NO_BFLOAT162_CONVERSIONS__",
     ]
+    for eip in EXTRA_INCLUDE_PATHS:
+        extra_cflags.append("-isystem")
+        extra_cflags.append(eip)
 
     conda_prefix = os.getenv("CONDA_PREFIX")
     if conda_prefix:

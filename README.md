@@ -10,7 +10,7 @@ $$
 $$
 
 $$
-\mathbf{y}^{(m)}\_t = \mathcal{P}^{(m)}\left( \left( \mathbf{s}^{(m')}\_{t-1} \right)\_{m'} , \left( \mathbf{g}^{(n)}\_{t}  \right)\_{n} \right)
+\mathbf{y}^{(m)}\_t = \mathcal{P}^{(m)}\left( \left( \mathbf{s}^{(m')}\_{t-1} \right)\_{m' \in \{1..N_s\}} , \left( \mathbf{g}^{(n)}\_{t}  \right)\_{n \in \{1..N_g\}} \right)
 $$
 
 Typically the inputs are modified with a linear layer which is omitted here for flexibility (it would look like $\mathbf{x}^{n}\_t = \mathbf{W}^{n} \mathbf{x'}\_t$). This operation can be parallelized along the sequence dimension in contrary to the recurrent part, \\

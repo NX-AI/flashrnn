@@ -75,7 +75,7 @@ We thank Thomas Schmied and Pieter-Jan Hoedt for valuable feedback.
 ## Cite as
 ```
 @misc{pöppel2024flashrnnoptimizingtraditionalrnns,
-      title={FlashRNN: Optimizing Traditional RNNs on Modern Hardware}, 
+      title={FlashRNN: I/O-Aware Optimization of Traditional RNNs on modern hardware}, 
       author={Korbinian Pöppel and Maximilian Beck and Sepp Hochreiter},
       year={2024},
       eprint={2412.07752},

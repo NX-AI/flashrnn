@@ -35,6 +35,21 @@ Your hardware needs to support CUDA Compute Capability $8.0$ or later. Make sure
 conda env create -n flashrnn -f environment_pt240cu124.yaml
 ```
 
+For all kinds of custom setups with torch and CUDA, keep in mind that versions have to match. Also, to make sure the correct CUDA libraries are included you can use the "FLASHRNN_EXTRA_INCLUDE_PATHS" environment variable now to inject different include paths, e.g.:
+
+```bash
+export FLASHRNN_EXTRA_INCLUDE_PATHS='/usr/local/include/cuda/:/usr/include/cuda/'
+```
+
+or within python:
+
+```python
+import os
+os.environ['FLASHRNN_EXTRA_INCLUDE_PATHS']='/usr/local/include/cuda/:/usr/include/cuda/'
+```
+
+
+
 ## Using FlashRNN
 
 FlashRNN employs a functional structure, none of the parameters are tied to the `flashrnn` function. To apply it simply use:

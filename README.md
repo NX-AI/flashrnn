@@ -35,6 +35,11 @@ Your hardware needs to support CUDA Compute Capability $8.0$ or later. Make sure
 conda env create -n flashrnn -f environment_pt240cu124.yaml
 ```
 
+To make sure torch uses only compatible compilation flags, you might have to use:
+```bash
+export TORCH_CUDA_ARCH_LIST="8.0;8.6;9.0"
+```
+
 For all kinds of custom setups with torch and CUDA, keep in mind that versions have to match. Also, to make sure the correct CUDA libraries are included you can use the "FLASHRNN_EXTRA_INCLUDE_PATHS" environment variable now to inject different include paths, e.g.:
 
 ```bash

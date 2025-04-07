@@ -1,6 +1,6 @@
 [project]
 name = "flashrnn"
-version = "1.0.3"
+version = "1.0.4"
 authors = [
   { name="Korbinian Pöppel", email="korbinian.poeppel@nx-ai.com" },
   { name="Maximilian Beck", email="maximilian.beck@nx-ai.com" },

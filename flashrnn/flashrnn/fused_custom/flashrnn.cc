@@ -52,14 +52,14 @@ using flashrnn_fused::ForwardPass;
 
 using torch::Tensor;
 
-class FlashRNNFuncFused {
+class FlashRNNFuncFusedCustom {
 private:
   ForwardPass fw;
   BackwardPass bw;
   BackwardPassCut bwc;
 
 public:
-  FlashRNNFuncFused(const bool training, const int batch_size,
+  FlashRNNFuncFusedCustom(const bool training, const int batch_size,
                     const int hidden_size, const int num_heads)
       : fw(training, batch_size, hidden_size, num_heads, 0, 0),
         bw(batch_size, hidden_size, num_heads, 0, 0),
@@ -123,7 +123,7 @@ public:
     }
 
     AT_DISPATCH_FLOATING_TYPES_AND_HALF2(
-        x.scalar_type(), "FlashRNNFuncFused.forward", ([&] {
+        x.scalar_type(), "FlashRNNFuncFusedCustom.forward", ([&] {
           fw.Set(training, batch_size, hidden_size, num_heads,
                  at::cuda::getCurrentCUDABlasHandle(),
                  at::cuda::getCurrentCUDAStream());
@@ -215,7 +215,7 @@ public:
 #endif
 
     AT_DISPATCH_FLOATING_TYPES_AND_HALF2(
-        recurrent_kernel_t.scalar_type(), "FlashRNNFuncFused.backward", ([&] {
+        recurrent_kernel_t.scalar_type(), "FlashRNNFuncFusedCustom.backward", ([&] {
           bw.Set(batch_size, hidden_size, num_heads,
                  at::cuda::getCurrentCUDABlasHandle(),
                  at::cuda::getCurrentCUDAStream());
@@ -304,7 +304,7 @@ public:
     Tensor d_state_buffer = torch::ones({}, options).to(torch::kFloat32);
 
     AT_DISPATCH_FLOATING_TYPES_AND_HALF2(
-        recurrent_kernel_t.scalar_type(), "FlashRNNFuncFused.backward_cut",
+        recurrent_kernel_t.scalar_type(), "FlashRNNFuncFusedCustom.backward_cut",
         ([&] {
           bwc.Set(batch_size, hidden_size, num_heads,
                   at::cuda::getCurrentCUDABlasHandle(),
@@ -338,9 +338,9 @@ public:
 } // anonymous namespace
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
-  pybind11::class_<FlashRNNFuncFused>(m, "FlashRNNFuncFused")
+  pybind11::class_<FlashRNNFuncFusedCustom>(m, "FlashRNNFuncFusedCustom")
       .def(pybind11::init<const bool, const int, const int, const int>())
-      .def("forward", &FlashRNNFuncFused::forward)
-      .def("backward", &FlashRNNFuncFused::backward)
-      .def("backward_cut", &FlashRNNFuncFused::backward_cut);
+      .def("forward", &FlashRNNFuncFusedCustom::forward)
+      .def("backward", &FlashRNNFuncFusedCustom::backward)
+      .def("backward_cut", &FlashRNNFuncFusedCustom::backward_cut);
 }

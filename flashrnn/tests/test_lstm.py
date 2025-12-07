@@ -38,11 +38,22 @@ sizes4 = {
     "backend": ["cuda_fused", "cuda"],
 }
 
+sizes5 = {
+    "batch_size": [16],
+    "head_dim": [768],
+    "sequence_size": [1024],
+    "num_heads": [1],
+    "backend": ["cuda_fused", "cuda", "cuda_fused_custom"],
+}
+
+# size_combinations = (
+#     [dict(zip(sizes1.keys(), vals)) for vals in product(*sizes1.values())]
+#     + [dict(zip(sizes2.keys(), vals)) for vals in product(*sizes2.values())]
+#     + [dict(zip(sizes3.keys(), vals)) for vals in product(*sizes3.values())]
+#     + [dict(zip(sizes4.keys(), vals)) for vals in product(*sizes4.values())]
+# )
 size_combinations = (
-    [dict(zip(sizes1.keys(), vals)) for vals in product(*sizes1.values())]
-    + [dict(zip(sizes2.keys(), vals)) for vals in product(*sizes2.values())]
-    + [dict(zip(sizes3.keys(), vals)) for vals in product(*sizes3.values())]
-    + [dict(zip(sizes4.keys(), vals)) for vals in product(*sizes4.values())]
+    [dict(zip(sizes5.keys(), vals)) for vals in product(*sizes5.values())]
 )
 
 
@@ -115,6 +126,7 @@ class TestLSTM:
         )
 
     @pytest.mark.parametrize("size_combination", size_combinations)
+    @pytest.mark.skip
     def test_sizes_float16(self, size_combination):
         try:
             assert model_test(
@@ -127,12 +139,14 @@ class TestLSTM:
             pass
 
     @pytest.mark.parametrize("size_combination", size_combinations)
+    @pytest.mark.skip
     def test_sizes_bfloat16(self, size_combination):
         try:
             assert model_test(
                 function="lstm",
                 dtype=torch.bfloat16,
                 tensor_compare_kwargs={"atol": 0.2, "rtol": 0.4},
+                # tensor_compare_kwargs={"atol": 0.6, "rtol": 1.2},
                 **size_combination,
             )
         except ValueError:

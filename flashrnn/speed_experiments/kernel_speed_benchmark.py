@@ -110,7 +110,8 @@ def create_head_dimension_configs(
     configs.append(
         triton.testing.Benchmark(
             x_names=["DH", "NH"],
-            x_vals=[(16, 48), (32, 24), (64, 12), (128, 6), (256, 3), (768, 1)],
+            # x_vals=[(16, 48), (32, 24), (64, 12), (128, 6), (256, 3), (768, 1)],
+            x_vals=[(768, 1)],
             line_arg="provider",
             line_vals=kernels_to_benchmark,
             line_names=kernels_to_benchmark,
@@ -446,39 +447,39 @@ def paperplot_experiments():
             ## lstm
             # fw
             "lstm--vanilla++fw",
-            "lstm--vanilla_fwbw++fw",
-            "lstm--triton_fused++fw",
+            # "lstm--vanilla_fwbw++fw",
+            # "lstm--triton_fused++fw",
             "lstm--cuda_fused++fw",
             "lstm--cuda++fw",
             # fwbw
-            "lstm--vanilla_fwbw++fwbw",
-            "lstm--vanilla++fwbw",
-            "lstm--triton_fused++fwbw",
-            "lstm--cuda_fused++fwbw",
-            "lstm--cuda++fwbw",
-            ## slstm
-            # fw
-            "slstm--vanilla++fw",
-            "slstm--vanilla_fwbw++fw",
-            "slstm--triton_fused++fw",
-            "slstm--cuda_fused++fw",
-            "slstm--cuda++fw",
-            # fwbw
-            "slstm--vanilla_fwbw++fwbw",
-            "slstm--triton_fused++fwbw",
-            "slstm--cuda_fused++fwbw",
-            "slstm--cuda++fwbw",
-            ## baselines
-            "nn.LSTM--pytorch-bfloat16++fw",
-            "nn.LSTM--pytorch-bfloat16++fwbw",
-            "nn.LSTM--pytorch-float32++fw",
-            "nn.LSTM--pytorch-float32++fwbw",
-            "nn.LSTM--pytorch-float16++fw",
-            "nn.LSTM--pytorch-float16++fwbw",
-            "haste.LSTM--pytorch-float32++fw",
-            "haste.LSTM--pytorch-float32++fwbw",
-            "attention_causal--fa2++fw",
-            "attention_causal--fa2++fwbw",
+            # "lstm--vanilla_fwbw++fwbw",
+            # "lstm--vanilla++fwbw",
+            # "lstm--triton_fused++fwbw",
+            # "lstm--cuda_fused++fwbw",
+            # "lstm--cuda++fwbw",
+            # ## slstm
+            # # fw
+            # "slstm--vanilla++fw",
+            # "slstm--vanilla_fwbw++fw",
+            # "slstm--triton_fused++fw",
+            # "slstm--cuda_fused++fw",
+            # "slstm--cuda++fw",
+            # # fwbw
+            # "slstm--vanilla_fwbw++fwbw",
+            # "slstm--triton_fused++fwbw",
+            # "slstm--cuda_fused++fwbw",
+            # "slstm--cuda++fwbw",
+            # ## baselines
+            # "nn.LSTM--pytorch-bfloat16++fw",
+            # "nn.LSTM--pytorch-bfloat16++fwbw",
+            # "nn.LSTM--pytorch-float32++fw",
+            # "nn.LSTM--pytorch-float32++fwbw",
+            # "nn.LSTM--pytorch-float16++fw",
+            # "nn.LSTM--pytorch-float16++fwbw",
+            # "haste.LSTM--pytorch-float32++fw",
+            # "haste.LSTM--pytorch-float32++fwbw",
+            # "attention_causal--fa2++fw",
+            # "attention_causal--fa2++fwbw",
             # "attention_causal--cudnn++fw",
             # "attention_causal--cudnn++fwbw",
             # "attention_causal--efficient++fw",
@@ -488,7 +489,7 @@ def paperplot_experiments():
         ],
         warmup=25,
         rep=1000,
-        dtype="bfloat16",
+        dtype="float32",
     )
 
     head_dim_run_configs = create_head_dimension_configs(head_dim_benchmark_config)
@@ -513,36 +514,36 @@ def paperplot_experiments():
             ## lstm
             # fw
             # "lstm--vanilla++fw",
-            "lstm--vanilla_fwbw++fw",
-            "lstm--triton_fused++fw",
-            "lstm--cuda_fused++fw",
-            "lstm--cuda++fw",
-            # fwbw
-            "lstm--vanilla_fwbw++fwbw",
-            "lstm--triton_fused++fwbw",
-            "lstm--cuda_fused++fwbw",
-            "lstm--cuda++fwbw",
-            ## slstm
-            # fw
-            # "slstm--vanilla++fw",
-            "slstm--vanilla_fwbw++fw",
-            "slstm--triton_fused++fw",
-            "slstm--cuda_fused++fw",
-            "slstm--cuda++fw",
-            # fwbw
-            "slstm--vanilla_fwbw++fwbw",
-            "slstm--triton_fused++fwbw",
-            "slstm--cuda_fused++fwbw",
-            "slstm--cuda++fwbw",
-            ## baselines
-            "nn.LSTM--pytorch-bfloat16++fw",
-            "nn.LSTM--pytorch-bfloat16++fwbw",
-            "nn.LSTM--pytorch-float32++fw",
-            "nn.LSTM--pytorch-float32++fwbw",
-            "nn.LSTM--pytorch-float16++fw",
-            "nn.LSTM--pytorch-float16++fwbw",
-            "attention_causal--fa2++fw",
-            "attention_causal--fa2++fwbw",
+            # "lstm--vanilla_fwbw++fw",
+            # "lstm--triton_fused++fw",
+            # "lstm--cuda_fused++fw",
+            # "lstm--cuda++fw",
+            # # fwbw
+            # "lstm--vanilla_fwbw++fwbw",
+            # "lstm--triton_fused++fwbw",
+            # "lstm--cuda_fused++fwbw",
+            # "lstm--cuda++fwbw",
+            # ## slstm
+            # # fw
+            # # "slstm--vanilla++fw",
+            # "slstm--vanilla_fwbw++fw",
+            # "slstm--triton_fused++fw",
+            # "slstm--cuda_fused++fw",
+            # "slstm--cuda++fw",
+            # # fwbw
+            # "slstm--vanilla_fwbw++fwbw",
+            # "slstm--triton_fused++fwbw",
+            # "slstm--cuda_fused++fwbw",
+            # "slstm--cuda++fwbw",
+            # ## baselines
+            # "nn.LSTM--pytorch-bfloat16++fw",
+            # "nn.LSTM--pytorch-bfloat16++fwbw",
+            # "nn.LSTM--pytorch-float32++fw",
+            # "nn.LSTM--pytorch-float32++fwbw",
+            # "nn.LSTM--pytorch-float16++fw",
+            # "nn.LSTM--pytorch-float16++fwbw",
+            # "attention_causal--fa2++fw",
+            # "attention_causal--fa2++fwbw",
             # "attention_causal--cudnn++fw",
             # "attention_causal--cudnn++fwbw",
             # "attention_causal--efficient++fw",
@@ -577,36 +578,36 @@ def paperplot_experiments():
             ## lstm
             # fw
             # "lstm--vanilla++fw",
-            "lstm--vanilla_fwbw++fw",
-            "lstm--triton_fused++fw",
-            "lstm--cuda_fused++fw",
-            "lstm--cuda++fw",
-            # fwbw
-            "lstm--vanilla_fwbw++fwbw",
-            "lstm--triton_fused++fwbw",
-            "lstm--cuda_fused++fwbw",
-            "lstm--cuda++fwbw",
-            ## slstm
-            # fw
-            # "slstm--vanilla++fw",
-            "slstm--vanilla_fwbw++fw",
-            "slstm--triton_fused++fw",
-            "slstm--cuda_fused++fw",
-            "slstm--cuda++fw",
+            # "lstm--vanilla_fwbw++fw",
+            # "lstm--triton_fused++fw",
+            # "lstm--cuda_fused++fw",
+            # "lstm--cuda++fw",
             # # fwbw
-            "slstm--vanilla_fwbw++fwbw",
-            "slstm--triton_fused++fwbw",
-            "slstm--cuda_fused++fwbw",
-            "slstm--cuda++fwbw",
-            ## baselines
-            "nn.LSTM--pytorch-bfloat16++fw",
-            "nn.LSTM--pytorch-bfloat16++fwbw",
-            "nn.LSTM--pytorch-float32++fw",
-            "nn.LSTM--pytorch-float32++fwbw",
-            "nn.LSTM--pytorch-float16++fw",
-            "nn.LSTM--pytorch-float16++fwbw",
-            "attention_causal--fa2++fw",
-            "attention_causal--fa2++fwbw",
+            # "lstm--vanilla_fwbw++fwbw",
+            # "lstm--triton_fused++fwbw",
+            # "lstm--cuda_fused++fwbw",
+            # "lstm--cuda++fwbw",
+            # ## slstm
+            # # fw
+            # # "slstm--vanilla++fw",
+            # "slstm--vanilla_fwbw++fw",
+            # "slstm--triton_fused++fw",
+            # "slstm--cuda_fused++fw",
+            # "slstm--cuda++fw",
+            # # # fwbw
+            # "slstm--vanilla_fwbw++fwbw",
+            # "slstm--triton_fused++fwbw",
+            # "slstm--cuda_fused++fwbw",
+            # "slstm--cuda++fwbw",
+            # ## baselines
+            # "nn.LSTM--pytorch-bfloat16++fw",
+            # "nn.LSTM--pytorch-bfloat16++fwbw",
+            # "nn.LSTM--pytorch-float32++fw",
+            # "nn.LSTM--pytorch-float32++fwbw",
+            # "nn.LSTM--pytorch-float16++fw",
+            # "nn.LSTM--pytorch-float16++fwbw",
+            # "attention_causal--fa2++fw",
+            # "attention_causal--fa2++fwbw",
             # "attention_causal--cudnn++fw",
             # "attention_causal--cudnn++fwbw",
             # "attention_causal--efficient++fw",
@@ -645,23 +646,23 @@ def debug_experiments():
         kernel_specifiers=[
             ## lstm
             # fw
-            # "lstm--vanilla++fw",
+            "lstm--vanilla++fw",
             # "lstm--vanilla_fwbw++fw",
             # "lstm--triton_fused-withlinear++fw",
-            "slstm--cuda_fused-withlinear++fw",
-            "slstm--cuda_fused++fw",
-            "slstm--cuda-withlinear++fw",
+            "lstm--cuda_fused-withlinear++fw",
+            "lstm--cuda_fused++fw",
+            "lstm--cuda-withlinear++fw",
             # # fwbw
             # # "lstm--vanilla_fwbw++fwbw",
-            # # "lstm--vanilla++fwbw",
+            # "lstm--vanilla++fwbw",
             # "lstm--triton_fused++fwbw",
-            "slstm--cuda_fused-withlinear++fwbw",
-            "slstm--cuda_fused++fwbw",
-            "slstm--cuda-withlinear++fwbw",
+            # "slstm--cuda_fused-withlinear++fwbw",
+            # "slstm--cuda_fused++fwbw",
+            # "slstm--cuda-withlinear++fwbw",
             # "lstm--cuda++fwbw",
             ## slstm
             # fw
-            # "slstm--vanilla++fw",
+            "slstm--vanilla++fw",
             # "slstm--vanilla_fwbw++fw",
             # "slstm--triton_fused++fw",
             # "slstm--cuda_fused++fw",
@@ -764,4 +765,4 @@ def paper_plot_experiments_additional():
 if __name__ == "__main__":
     paperplot_experiments()
     # debug_experiments()
-    paper_plot_experiments_additional()
+    # paper_plot_experiments_additional()

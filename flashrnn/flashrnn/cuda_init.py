@@ -4,18 +4,47 @@
 import os
 from typing import Sequence, Union
 import logging
+import functools
+import subprocess
+import sys
+from packaging.version import Version
+import re
 
 import time
 import random
 
 import torch
 from torch.utils.cpp_extension import load as _load
+from torch.utils.cpp_extension import  _find_cuda_home 
+
 
 # print("INCLUDE:", torch.utils.cpp_extension.include_paths(cuda=True))
 # print("C++ compat", torch.utils.cpp_extension.check_compiler_abi_compatibility("g++"))
 # print("C compat", torch.utils.cpp_extension.check_compiler_abi_compatibility("gcc"))
 
 LOGGER = logging.getLogger(__name__)
+CUDA_HOME = _find_cuda_home()
+IS_WINDOWS = sys.platform == 'win32'
+IS_MACOS = sys.platform.startswith('darwin')
+SUBPROCESS_DECODE_ARGS = ('oem',) if IS_WINDOWS else ()
+
+@functools.cache
+def get_cuda_version() -> Version | None:
+    try:
+        nvcc = os.path.join(CUDA_HOME, 'bin', 'nvcc.exe' if IS_WINDOWS else 'nvcc')
+        cuda_version_str = subprocess.check_output([nvcc, '--version']).strip().decode(*SUBPROCESS_DECODE_ARGS)
+        cuda_version = re.search(r'release (\d+[.]\d+)', cuda_version_str)
+
+        if cuda_version is None:
+            return
+        cuda_str_version = cuda_version.group(1)
+        cuda_version = Version(cuda_str_version)
+        return cuda_version
+    except (RuntimeError, FileNotFoundError, subprocess.CalledProcessError) as e:
+        # raise RuntimeError(
+        #         "Could not determine CUDA version."
+        #     ) from e
+        return 
 
 
 def defines_to_cflags(
@@ -124,6 +153,11 @@ def load(*, name, sources, extra_cflags=(), extra_cuda_cflags=(), **kwargs):
             *extra_cuda_cflags,
         ],
     }
+
+    cuda_version = get_cuda_version()
+    if cuda_version is not None and cuda_version >= Version("12.8"):
+        myargs['extra_cuda_cflags'].append("-static-global-template-stub=false")
+
     LOGGER.info("Kernel compilation arguments", myargs)
     myargs.update(**kwargs)
     # add random waiting time to minimize deadlocks because of badly managed multicompile of pytorch ext

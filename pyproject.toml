@@ -16,7 +16,7 @@ classifiers = [
 dependencies = [
     "torch",
     "einops",
-    "triton",
+    "triton; sys_platform == 'linux'",
     "ninja"
 ]
 

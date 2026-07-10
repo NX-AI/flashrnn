@@ -53,6 +53,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from functools import lru_cache, wraps
 from typing import Iterable, Optional, Sequence, Union
+from pathlib import Path
 
 LOGGER = logging.getLogger(__name__)
 
@@ -1931,7 +1932,7 @@ class ValueRefinement:
 
 
 @cache_decorator(
-    os.getenv("CONSTRINT_CACHE_DIR", os.getenv("HOME") + "/.cache/constrint")
+    os.getenv("CONSTRINT_CACHE_DIR", str(Path.home() / ".cache" / "constrint"))
 )
 def solve_constrint(
     constr: Constraint,

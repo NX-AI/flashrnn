@@ -1,6 +1,6 @@
 [project]
 name = "flashrnn"
-version = "1.0.4"
+version = "1.0.5"
 authors = [
   { name="Korbinian Pöppel", email="korbinian.poeppel@nx-ai.com" },
   { name="Maximilian Beck", email="maximilian.beck@nx-ai.com" },
@@ -16,7 +16,7 @@ classifiers = [
 dependencies = [
     "torch",
     "einops",
-    "triton",
+    "triton; sys_platform == 'linux'",
     "ninja"
 ]
 

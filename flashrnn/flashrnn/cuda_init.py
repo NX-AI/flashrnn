@@ -162,8 +162,13 @@ def _hipify_sources(sources):
         r'^\s*#\s*include\s*[<"](?:cuda|cuda_runtime_api|cuda_device_runtime_api)\.h[>"]\s*$',
         re.MULTILINE,
     )
+    _text_exts = (".cu", ".cuh", ".cc", ".cpp", ".c", ".h", ".hpp", ".hip")
     for dirpath, _, filenames in os.walk(out_root):
+        if "__pycache__" in dirpath:
+            continue
         for filename in filenames:
+            if not filename.endswith(_text_exts):
+                continue  # skip .pyc and other binaries copied alongside sources
             path = os.path.join(dirpath, filename)
             with open(path, "r") as fh:
                 text = fh.read()

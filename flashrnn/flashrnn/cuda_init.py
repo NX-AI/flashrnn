@@ -203,12 +203,39 @@ def _hipify_sources(sources):
             shutil.copyfile(hip_path, hip_source)
             hip_path = hip_source
         new_sources.append(hip_path)
-    return new_sources
+    return new_sources, out_root
+
+
+def _remap_hip_includes(flags, out_root):
+    """Point any `-include <repo path>` at its hipified copy in the cache tree.
+
+    The fused backend force includes fused/{function}_fused_pointwise.cuh from
+    the original source tree. On ROCm that header must be the hipified version,
+    otherwise its cuBLAS/bf16 spellings reach the HIP compiler untranslated.
+    """
+    src_root = os.path.abspath(curdir)
+    flags = list(flags)
+    out = []
+    i = 0
+    while i < len(flags):
+        out.append(flags[i])
+        if flags[i] == "-include" and i + 1 < len(flags):
+            inc = os.path.abspath(flags[i + 1])
+            if inc.startswith(src_root + os.sep):
+                cand = os.path.join(out_root, os.path.relpath(inc, src_root))
+                out.append(cand if os.path.exists(cand) else flags[i + 1])
+            else:
+                out.append(flags[i + 1])
+            i += 2
+            continue
+        i += 1
+    return out
 
 
 def load(*, name, sources, extra_cflags=(), extra_cuda_cflags=(), **kwargs):
     if IS_HIP:
-        sources = _hipify_sources(sources)
+        sources, hip_out_root = _hipify_sources(sources)
+        extra_cuda_cflags = _remap_hip_includes(extra_cuda_cflags, hip_out_root)
     suffix = ""
     for flag in extra_cflags:
         pref = [st[0] for st in flag[2:].split("=")[0].split("_")]

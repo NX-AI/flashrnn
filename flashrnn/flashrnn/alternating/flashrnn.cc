@@ -305,7 +305,7 @@ public:
 
 // PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) { PARAMETRIC_DEFINITIONS }
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
-  pybind11::class_<FlashRNNFunc>(m, "FlashRNNFunc")
+  pybind11::class_<FlashRNNFunc>(m, "FlashRNNFunc", pybind11::module_local())
       .def(pybind11::init<const bool, const int, const int, const int>())
       .def("forward", &FlashRNNFunc::forward)
       .def("backward", &FlashRNNFunc::backward)

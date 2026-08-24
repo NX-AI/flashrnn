@@ -338,7 +338,7 @@ public:
 } // anonymous namespace
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
-  pybind11::class_<FlashRNNFuncFused>(m, "FlashRNNFuncFused")
+  pybind11::class_<FlashRNNFuncFused>(m, "FlashRNNFuncFused", pybind11::module_local())
       .def(pybind11::init<const bool, const int, const int, const int>())
       .def("forward", &FlashRNNFuncFused::forward)
       .def("backward", &FlashRNNFuncFused::backward)

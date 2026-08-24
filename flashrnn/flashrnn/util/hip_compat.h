@@ -110,11 +110,14 @@ static inline hipblasStatus_t hipblasHgemm(
                         reinterpret_cast<hipblasHalf *>(C), ldc);
 }
 
-// --- bf16 atomicAdd. ROCm (notably RDNA/gfx11xx) has no native
+// --- bf16 atomicAdd. Older ROCm (notably RDNA/gfx11xx) had no native
 // atomicAdd(__hip_bfloat16*, __hip_bfloat16), which the backward kernels use to
 // accumulate bias gradients. Emulate it with a 32-bit CAS loop on the aligned
 // word containing the bf16 value — the standard fallback CUDA uses for bf16
-// atomics on architectures without hardware support.
+// atomics on architectures without hardware support. ROCm 7.x ships a native
+// overload (amd_hip_bf16.h), so defining ours there collides ("static
+// declaration follows non-static" + ambiguous call) — guard it out.
+#if HIP_VERSION < 70000000
 static __device__ __forceinline__ __hip_bfloat16 atomicAdd(__hip_bfloat16 *address,
                                                            __hip_bfloat16 val) {
     unsigned int *base =
@@ -133,5 +136,6 @@ static __device__ __forceinline__ __hip_bfloat16 atomicAdd(__hip_bfloat16 *addre
     unsigned short ret_bits = static_cast<unsigned short>((old >> shift) & 0xffffu);
     return reinterpret_cast<__hip_bfloat16 &>(ret_bits);
 }
+#endif // HIP_VERSION < 70000000
 
 #endif // __HIP_PLATFORM_AMD__ || USE_ROCM

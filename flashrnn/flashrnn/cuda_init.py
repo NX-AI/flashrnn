@@ -320,10 +320,17 @@ def load(*, name, sources, extra_cflags=(), extra_cuda_cflags=(), **kwargs):
             ],
         }
     else:
+        # Windows: MSVC link.exe needs /LIBPATH: and *.lib, not the Unix -L / -l form.
+        if IS_WINDOWS:
+            _win_cuda_libdir = os.path.join(CUDA_HOME, "lib", "x64")
+            _extra_ldflags = [f"/LIBPATH:{_win_cuda_libdir}", "cublas.lib"]
+        else:
+            _extra_ldflags = [f"-L{os.environ['CUDA_LIB']}", "-lcublas"]
+
         myargs = {
             "verbose": True,
             "with_cuda": True,
-            "extra_ldflags": [f"-L{os.environ['CUDA_LIB']}", "-lcublas"],
+            "extra_ldflags": _extra_ldflags,
             "extra_cflags": [*extra_cflags],
             "extra_cuda_cflags": [
                 # "-gencode",
@@ -335,7 +342,9 @@ def load(*, name, sources, extra_cflags=(), extra_cuda_cflags=(), **kwargs):
                 "-res-usage",
                 "--use_fast_math",
                 "-O3",
-                "-Xptxas -O3",
+                # Windows nvcc rejects the joined token "-Xptxas -O3"; pass as two args.
+                "-Xptxas",
+                "-O3",
                 "--extra-device-vectorization",
                 *extra_cflags,
                 *extra_cuda_cflags,

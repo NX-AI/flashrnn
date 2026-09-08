@@ -86,11 +86,8 @@ def flashrnn_forward_step(
     assert batch_dim == states.shape[1]
     assert hidden_dim == states.shape[2]
 
-    R = (
-        R.reshape(num_heads, num_gates_r * head_dim, head_dim)
-        .transpose(1, 2)
-        .reshape(1, num_heads, head_dim, num_gates_r * head_dim)
-    )
+    # [H, D, G*D] 
+    R = R.reshape(num_heads, num_gates_r * head_dim, head_dim).transpose(1, 2)
 
     states_all = Wx.zeros(
         [num_states, sequence_dim + 1, batch_dim, hidden_dim],
@@ -98,10 +95,11 @@ def flashrnn_forward_step(
     states_all[:, 0] = states
     Ry = (
         states[0]
-        .reshape(batch_dim, num_heads, 1, -1)
-        .matmul(R)
-        .reshape(batch_dim, num_heads, num_gates_r, -1)
-        .transpose(1, 2)
+        .reshape(batch_dim, num_heads, head_dim)
+        .transpose(0, 1)
+        .bmm(R)
+        .view(num_heads, batch_dim, num_gates_r, head_dim)
+        .permute(1, 2, 0, 3)
         .reshape(batch_dim, num_gates_r, -1)
     )
     sdtype = states.dtype

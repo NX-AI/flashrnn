@@ -12,9 +12,7 @@ def flashrnn_forward_pointwise(
     torch.Tensor,
 ]:
     _ = constants
-    # B, H, D = Wx.shape[0], Wx.shape[2], Wx.shape[3]
     raw = Wx + Ry + b[None, :]
-    # raw = raw.view(-1, 4, -1)
     (graw,) = torch.unbind(raw, dim=1)
     # with torch.no_grad():  # THE difference to maxg aka max_gradient (here max / max_static)
     ynew = torch.tanh(graw)

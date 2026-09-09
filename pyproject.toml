@@ -8,6 +8,7 @@ authors = [
 description = "FlashRNN: Optimizing Traditional RNNs on Modern Hardware"
 readme = "README.md"
 license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
 requires-python = ">=3.8"
 classifiers = [
     "License :: OSI Approved :: Apache Software License",

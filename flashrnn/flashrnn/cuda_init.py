@@ -18,10 +18,6 @@ from torch.utils.cpp_extension import load as _load
 from torch.utils.cpp_extension import  _find_cuda_home 
 
 
-# print("INCLUDE:", torch.utils.cpp_extension.include_paths(cuda=True))
-# print("C++ compat", torch.utils.cpp_extension.check_compiler_abi_compatibility("g++"))
-# print("C compat", torch.utils.cpp_extension.check_compiler_abi_compatibility("gcc"))
-
 LOGGER = logging.getLogger(__name__)
 CUDA_HOME = _find_cuda_home()
 IS_WINDOWS = sys.platform == 'win32'
@@ -145,16 +141,12 @@ def load(*, name, sources, extra_cflags=(), extra_cuda_cflags=(), **kwargs):
         "extra_ldflags": _extra_ldflags,
         "extra_cflags": [*extra_cflags],
         "extra_cuda_cflags": [
-            # "-gencode",
-            # "arch=compute_70,code=compute_70",
-            # "-dbg=1",
             '-Xptxas="-v"',
             "-gencode",
             "arch=compute_80,code=compute_80",
             "-res-usage",
             "--use_fast_math",
             "-O3",
-            # Windows nvcc rejects the joined token "-Xptxas -O3"; pass as two args.
             "-Xptxas",
             "-O3",
             "--extra-device-vectorization",

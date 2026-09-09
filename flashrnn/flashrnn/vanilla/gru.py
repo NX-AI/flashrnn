@@ -19,7 +19,6 @@ def flashrnn_forward_pointwise(
     # gates n for input only
     nraw = Wx[:, 2] + b[None, 3]
     (h,) = torch.unbind(states, dim=1)
-    # raw = raw.view(-1, 4, -1)
 
     ggate = graw
     ngate = nraw

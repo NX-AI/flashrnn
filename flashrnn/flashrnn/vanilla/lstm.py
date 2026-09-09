@@ -12,12 +12,9 @@ def flashrnn_forward_pointwise(
     torch.Tensor,
 ]:
     _ = constants
-    # B, H, D = Wx.shape[0], Wx.shape[2], Wx.shape[3]
     raw = Wx + Ry + b[None, :]
     _, c = torch.unbind(states, dim=1)
-    # raw = raw.view(-1, 4, -1)
     iraw, fraw, zraw, oraw = torch.unbind(raw, dim=1)
-    # with torch.no_grad():  # THE difference to maxg aka max_gradient (here max / max_static)
     ogate = torch.sigmoid(oraw)
     igate = torch.sigmoid(iraw)
     fgate = torch.sigmoid(fraw)

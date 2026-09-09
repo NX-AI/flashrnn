@@ -37,12 +37,6 @@ def flashrnn_forward(
 
     assert batch_dim == states.shape[1]
 
-    # g = torch.zeros(
-    #     [sequence_dim + 1, batch_dim, num_gates_t, num_heads, head_dim],
-    #     device=Wx.device,
-    #     dtype=Wx.dtype,
-    # )
-
     states_all = torch.zeros(
         [sequence_dim + 1, batch_dim, num_states, num_heads, head_dim],
         device=Wx.device,
@@ -50,18 +44,18 @@ def flashrnn_forward(
     )
     states = states[0]
     states_all[0] = states
-    R = R.reshape(1, num_heads, head_dim, num_gates_r * head_dim)
+
+    R = R.reshape(num_heads, head_dim, num_gates_r * head_dim)
     for i, Wx_t in enumerate(Wx.unbind(dim=0)):
         Ry = (
             states[:, 0]
-            .reshape(batch_dim, num_heads, 1, -1)
-            .matmul(R)
-            .reshape(batch_dim, num_heads, num_gates_r, head_dim)
-            .transpose(1, 2)
+            .transpose(0,1)
+            .bmm(R)
+            .view(num_heads, batch_dim, num_gates_r, head_dim)
+            .permute(1,2,0,3)
         )
 
         states, _ = pointwise_forward(Wx_t, Ry, b, states, constants=constants)
-        # g[i] = gates
         states_all[i + 1] = states
 
     # shapes ([T, B, S, N, H], [S, B, 4, N, H])
@@ -92,14 +86,8 @@ def flashrnn_forward_step(
     assert batch_dim == states.shape[1]
     assert hidden_dim == states.shape[2]
 
-    # g = Wx.zeros(
-    #     [sequence_dim + 1, num_gates_t, batch_dim, hidden_dim],
-    # )
-    R = (
-        R.reshape(num_heads, num_gates_r * head_dim, head_dim)
-        .transpose(1, 2)
-        .reshape(1, num_heads, head_dim, num_gates_r * head_dim)
-    )
+    # [H, D, G*D] 
+    R = R.reshape(num_heads, num_gates_r * head_dim, head_dim).transpose(1, 2)
 
     states_all = Wx.zeros(
         [num_states, sequence_dim + 1, batch_dim, hidden_dim],
@@ -107,10 +95,11 @@ def flashrnn_forward_step(
     states_all[:, 0] = states
     Ry = (
         states[0]
-        .reshape(batch_dim, num_heads, 1, -1)
-        .matmul(R)
-        .reshape(batch_dim, num_heads, num_gates_r, -1)
-        .transpose(1, 2)
+        .reshape(batch_dim, num_heads, head_dim)
+        .transpose(0, 1)
+        .bmm(R)
+        .view(num_heads, batch_dim, num_gates_r, head_dim)
+        .permute(1, 2, 0, 3)
         .reshape(batch_dim, num_gates_r, -1)
     )
     sdtype = states.dtype

@@ -106,11 +106,10 @@ We thank Thomas Schmied and Pieter-Jan Hoedt for valuable feedback.
 ```
 
 ## License
-NXAI Community License (see `LICENSE` file)
+Apache-2.0 (see `LICENSE` file)
 
 ## Citations
 -  Merrill, W., Petty, J., & Sabharwal, A. (2024). The illusion of state in state-space models. In Proceedings of the Forty-first International Conference on Machine Learning. Retrieved from https://openreview.net/forum?id=QZgo9JZpLq
 
 - Dao, T., Fu, D., Ermon, S., Rudra, A., & Ré, C. (2022). FlashAttention: Fast and memory-efficient exact attention with IO-awareness. In S. Koyejo, S. Mohamed, A. Agarwal, D. Belgrave, K. Cho, & A. Oh (Eds.), Advances in Neural Information Processing Systems (Vol. 35, pp. 16344–16359). Curran Associates, Inc. Retrieved from https://proceedings.neurips.cc/paper_files/paper/2022/file/67d57c32e20fd0a7a302cb81d36e40d5-Paper-Conference.pdf
-
 

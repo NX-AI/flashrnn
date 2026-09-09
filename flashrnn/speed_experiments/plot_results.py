@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 from typing import Any
 from matplotlib import pyplot as plt
 import numpy as np

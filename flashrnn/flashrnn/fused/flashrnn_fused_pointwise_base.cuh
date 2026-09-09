@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 #pragma once
 #ifndef _FLASHRNN_POINTWISE_INCLUDED
 #define _FLASHRNN_POINTWISE_INCLUDED

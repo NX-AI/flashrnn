@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Integer CSP solver file - CONSTRINT
 # This script solves CSP problems tied to integer variables
 # and optimized for multiplicative and divisibility constraints (e.g. tiling sizes)

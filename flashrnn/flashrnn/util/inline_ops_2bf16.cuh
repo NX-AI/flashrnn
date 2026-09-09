@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 // Copyright 2023 IARAI GmbH, All Rights Reserved
 // Author: Korbinian Poeppel
 // Adapted from the haste library

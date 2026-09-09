@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 char name[256];  /**< ASCII string identifying device */
 cudaUUID_t uuid; /**< 16-byte unique identifier */
 char luid[8]; /**< 8-byte locally unique identifier. Value is undefined on TCC

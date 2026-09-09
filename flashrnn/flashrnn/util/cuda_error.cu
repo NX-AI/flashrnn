@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 #include "cuda_error.h"
 
 #define CEIL_DIV(a, b) (((a) + (b)-1) / (b))

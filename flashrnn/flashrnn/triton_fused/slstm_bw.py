@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Maximilian Beck
 import triton.language as tl
 import triton

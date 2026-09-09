@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 #include "../util/cuda_error.h"
 #include "../util/inline_ops.cuh"
 #include <cublas_v2.h>

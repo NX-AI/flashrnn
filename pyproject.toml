@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "flashrnn"
 version = "1.0.6"
@@ -7,7 +11,9 @@ authors = [
 ]
 description = "FlashRNN: Optimizing Traditional RNNs on Modern Hardware"
 readme = "README.md"
-requires-python = ">=3.8"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
@@ -25,6 +31,20 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/NX-AI/flashrnn"
 Issues = "https://github.com/NX-AI/flashrnn/issues"
+"Source Code" = "https://github.com/NX-AI/flashrnn"
 
-[tools.setuptools.packages.find]
-where = ["flashrnn"]
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+namespaces = false
+exclude = ["debug", "notebooks", "speed_experiments", "tests"]
+
+[tool.setuptools.package-data]
+"*" = [
+    "flashrnn/gpu_info/*.cc", "flashrnn/gpu_info/*.cu", "flashrnn/gpu_info/*.h",
+    "flashrnn/fused/*.cc", "flashrnn/fused/*.cu", "flashrnn/fused/*.h", "flashrnn/fused/*.cuh",
+    "flashrnn/alternating/*.cc", "flashrnn/alternating/*.cu", "flashrnn/alternating/*.h", "flashrnn/alternating/*.cuh",
+    "flashrnn/util/*.cc", "flashrnn/util/*.cu", "flashrnn/util/*.h", "flashrnn/util/*.cuh",
+]

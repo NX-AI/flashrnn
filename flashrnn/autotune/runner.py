@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 import argparse
 from xlstm.benchmarking.profiling.xlstm_profiling import get_inputs
 from xlstm.benchmarking.profiling.xlstm_profiling import run_single

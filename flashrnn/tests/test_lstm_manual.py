@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 import torch
 from flashrnn.flashrnn.flashrnn import flashrnn, _get_config
 

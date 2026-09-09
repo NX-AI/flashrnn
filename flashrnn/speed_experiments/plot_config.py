@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 import matplotlib as mpl
 from pathlib import Path
 

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "flashrnn"
-version = "1.0.7"
+version = "1.0.8"
 authors = [
   { name="Korbinian Pöppel", email="korbinian.poeppel@nx-ai.com" },
   { name="Maximilian Beck", email="maximilian.beck@nx-ai.com" },

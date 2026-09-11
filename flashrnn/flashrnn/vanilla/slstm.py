@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 import torch
 
-@torch.compile
 def flashrnn_forward_pointwise(
     Wx: torch.Tensor,  # dim [B, 4*H]
     Ry: torch.Tensor,  # dim [B, 4*H]

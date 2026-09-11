@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 import torch
 
-
+@torch.compile
 def flashrnn_forward_pointwise(
     Wx: torch.Tensor,  # dim [B, 4*H]
     Ry: torch.Tensor,  # dim [B, 4*H]
@@ -17,10 +17,7 @@ def flashrnn_forward_pointwise(
     y, c, n, m = torch.unbind(states, dim=1)
     iraw, fraw, zraw, oraw = torch.unbind(raw, dim=1)
     logfplusm = torch.nn.functional.logsigmoid(fraw) + m
-    if torch.all(n == 0.0):
-        mnew = iraw
-    else:
-        mnew = torch.max(iraw, logfplusm)
+    mnew = torch.where(n==0, iraw, torch.max(iraw, logfplusm))
     ogate = torch.sigmoid(oraw)
     igate = torch.exp(iraw - mnew)
     fgate = torch.exp(logfplusm - mnew)

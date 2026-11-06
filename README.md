@@ -94,14 +94,15 @@ We thank Thomas Schmied and Pieter-Jan Hoedt for valuable feedback.
 
 ## Cite as
 ```
-@misc{pöppel2024flashrnnoptimizingtraditionalrnns,
-      title={FlashRNN: I/O-Aware Optimization of Traditional RNNs on modern hardware}, 
-      author={Korbinian Pöppel and Maximilian Beck and Sepp Hochreiter},
-      year={2024},
-      eprint={2412.07752},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2412.07752}, 
+@inproceedings{poeppel:25flashrnn,
+  title     = {{FlashRNN}: {I/O}-Aware Optimization of Traditional {RNNs} on Modern Hardware},
+  author    = {P{\"o}ppel, Korbinian and Beck, Maximilian and Hochreiter, Sepp},
+  booktitle = {International Conference on Learning Representations},
+  year      = {2025},
+  eprint    = {2412.07752},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url       = {https://arxiv.org/abs/2412.07752}
 }
 ```
 
